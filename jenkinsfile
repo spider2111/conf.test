@@ -19,11 +19,6 @@ node {
 
     // Отладочный вывод, чтобы убедиться, что файл конфигурации успешно загружен
     echo "Configuration file loaded: ${configFileName}"
-    echo "Contents of configuration file:"
-    echo config
-
-    // Отладочный вывод, чтобы убедиться, что файл конфигурации успешно загружен
-    echo "Configuration file loaded: ${configFileName}"
     println "Contents of configuration file:"
     println config.getClass()
     println config
@@ -31,7 +26,6 @@ node {
     // Проверяем, что config является объектом, а не строкой
     if (config instanceof Map) {
         echo "PROJECT_NAME: ${config.PROJECT_NAME}"
-        echo "AGENT: ${config.AGENT}"
     } else {
         echo "config is not a map, it is ${config.getClass()}"
     }
@@ -51,7 +45,6 @@ pipeline {
                     echo config
                     // Берем переменнные из config файлов
                     echo "PROJECT_NAME: ${config.PROJECT_NAME}"
-                    echo "AGENT: ${config.AGENT}"
                 }
             }
         }
