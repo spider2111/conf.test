@@ -19,10 +19,8 @@ pipeline {
             steps {
                 script {
                     // Читаем содержимое JSON файла и сохраняем его в переменной
-                    def configFile = readJSON file: configFileName
-
-                    // Теперь вы можете использовать переменные из JSON файла в pipeline
-                    config = configFile
+                    def configFileContent = readFile(configFileName)
+                    config = readJSON text: configFileContent
 
                     // Отладочный вывод, чтобы убедиться, что файл конфигурации успешно загружен
                     echo "Configuration file loaded: ${configFileName}"
@@ -44,3 +42,4 @@ pipeline {
         }
     }
 }
+
