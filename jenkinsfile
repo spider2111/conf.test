@@ -30,8 +30,11 @@ pipeline {
         stage('Example') {
             steps {
                 script {
+                    // Отладочный вывод, чтобы убедиться, что файл конфигурации успешно загружен
+                    echo "Configuration file loaded: ${configFileName}"
+                    echo "Contents of configuration file:"
                     // Берем переменнные из config файлов
- //                   echo "PROJECT_NAME: ${config.PROJECT_NAME}"
+                    echo "PROJECT_NAME: ${config.PROJECT_NAME}"
                     echo "AGENT: ${config.AGENT}"
                 }
             }
