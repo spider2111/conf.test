@@ -16,6 +16,11 @@ node {
     
     // Загружаем файлы конфигурации
     config = load configFileName
+
+    // Отладочный вывод, чтобы убедиться, что файл конфигурации успешно загружен
+    echo "Configuration file loaded: ${configFileName}"
+    echo "Contents of configuration file:"
+    echo config
 }
 
 pipeline {
