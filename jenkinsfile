@@ -32,6 +32,7 @@ pipeline {
                 script {
                     // Отладочный вывод, чтобы убедиться, что файл конфигурации успешно загружен
                     echo "Configuration file loaded: ${configFileName}"
+                    cat config 
                     echo "Contents of configuration file:"
                     echo config
                     // Берем переменнные из config файлов
