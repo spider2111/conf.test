@@ -12,7 +12,7 @@ def config
 
 node {
     // Клонируем репозиторий Git
-    git 'https://github.com/spider2111/conf.test.git'
+    git branch: 'main', url: 'https://github.com/spider2111/conf.test.git'
     
     // Загрузка файла конфигурации
     config = load configFileName
