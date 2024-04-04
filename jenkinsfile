@@ -12,11 +12,19 @@ switch (params.BUILD) {
 
 pipeline {
     agent any
-
+        options {
+            ansiColor('xterm')
+        }
+    parameters{
+        booleanParam(name: 'app', defaultValue: true, description: 'Стенд на котором запускаем')
+        booleanParam(name: 'istio', defaultValue: false, description: 'Установка новой конфигурации istio')
+        string(name: 'DISTRIB', defaultValue: 'D-01.012.00-85', description: 'дистрибутив')
+    }
     stages {
         stage('Read Config') {
             steps {
                 script {
+                    echo '\n\033[42m======================================\033[0m\033[41m\033[97m Read Config \033[0m\033[42m======================================\033[0m\n'
                     // Читаем JSON файл
                     def configFileContent = readFile(configFileName)
                     def jsonSlurper = new groovy.json.JsonSlurper()
@@ -31,6 +39,7 @@ pipeline {
         stage('Example') {
             steps {
                 script {
+                    echo '\n\033[42m======================================\033[0m\033[41m\033[97m Example \033[0m\033[42m======================================\033[0m\n'
                     // Получаем конфигурацию из переменной env.CONFIG
                     def config = new groovy.json.JsonSlurper().parseText(env.CONFIG)
                     // Отладка для проверки переменных в JSON 
@@ -40,5 +49,13 @@ pipeline {
                 }
             }
         }
+        post {
+            always {
+                cleanWs notFailBuild: true, disableDeferredWipeout: true, deleteDirs: true
+            }
+        }
+
+
+
     }
 }
