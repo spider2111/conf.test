@@ -14,9 +14,10 @@ node {
     // Клонируем репозиторий Git
     git branch: 'main', url: 'https://github.com/spider2111/conf.test.git'
     
-    // Загружаем и парсим файл конфигурации JSON
+    // Загружаем и парсим файл конфигурации JSON с помощью JsonSlurper
     def configFileContent = readFile(configFileName)
-    config = readJSON file: configFileContent
+    def jsonSlurper = new JsonSlurper()
+    config = jsonSlurper.parseText(configFileContent)
 
     // Отладочный вывод, чтобы убедиться, что файл конфигурации успешно загружен
     echo "Configuration file loaded: ${configFileName}"
