@@ -11,8 +11,11 @@ switch (params.BUILD) {
 def config
 
 node {
+    // Клонируем репозиторий Git
+    git 'https://github.com/spider2111/conf.test.git'
+    
     // Загрузка файла конфигурации
-    config = load "${workspace}/${configFileName}"
+    config = load configFileName
 }
 
 pipeline {
