@@ -1,5 +1,6 @@
 {
     "PROJECT_NAME": "test2",
-    "AGENT": "dind"
+    "AGENT": "dind",
+    "NEXUS_REPO": "https://test2.repo.com"
   }
   
