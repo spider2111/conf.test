@@ -15,7 +15,7 @@ node {
     git branch: 'main', url: 'https://github.com/spider2111/conf.test.git'
     
     // Загружаем и выполнить файл конфигурации
-    configFileContent = file(configFileName).text
+    def configFileContent = readFile(configFileName)
     config = evaluate(configFileContent)
 
     // Отладочный вывод, чтобы убедиться, что файл конфигурации успешно загружен
