@@ -1,0 +1,27 @@
+def configFileName
+switch (params.BUILD) {
+    case 'test1':
+        configFileName = 'config_test1.groovy'
+        break
+    case 'test2':
+        configFileName = 'config_test2.groovy'
+        break
+}
+
+def config = load configFileName
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Example') {
+            steps {
+                script {
+                    // Используйте переменные из файла конфигурации
+                    echo "PROJECT_NAME: ${config.PROJECT_NAME}"
+                    echo "AGENT: ${config.AGENT}"
+                }
+            }
+        }
+    }
+}
