@@ -14,7 +14,7 @@ node {
     // Клонируем репозиторий Git
     git branch: 'main', url: 'https://github.com/spider2111/conf.test.git'
     
-    // Загрузка файла конфигурации
+    // Загружаем файлы конфигурации
     config = load configFileName
 }
 
@@ -25,8 +25,8 @@ pipeline {
         stage('Example') {
             steps {
                 script {
-                    // Используйте переменные из файла конфигурации
-                    echo "PROJECT_NAME: ${config.PROJECT_NAME}"
+                    // Берем переменнные из config файлов
+ //                   echo "PROJECT_NAME: ${config.PROJECT_NAME}"
                     echo "AGENT: ${config.AGENT}"
                 }
             }
