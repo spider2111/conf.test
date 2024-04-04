@@ -41,7 +41,7 @@ pipeline {
                 script {
                     echo '\n\033[42m======================================\033[0m\033[41m\033[97m Example \033[0m\033[42m======================================\033[0m\n'
                     // Получаем конфигурацию из переменной env.CONFIG
-                    def config = new groovy.json.JsonSlurper().parseText(env.CONFIG)
+                    //def config = new groovy.json.JsonSlurper().parseText(env.CONFIG)
                     // Отладка для проверки переменных в JSON 
                     echo "PROJECT_NAME: ${config.PROJECT_NAME}"
                     echo "AGENT: ${config.AGENT}"
