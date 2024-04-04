@@ -1,6 +1,5 @@
-import groovy.json.JsonSlurper
-
 def configFileName
+
 switch (params.BUILD) {
     case 'test1':
         configFileName = 'config_test1.json'
@@ -12,26 +11,28 @@ switch (params.BUILD) {
 
 def config
 
-node {
-    // Клонируем репозиторий Git
-    git branch: 'main', url: 'https://github.com/spider2111/conf.test.git'
-    
-    // Загружаем и парсим файл конфигурации JSON с помощью JsonSlurper
-    def configFileContent = readFile(configFileName)
-    def jsonSlurper = new JsonSlurper()
-    config = jsonSlurper.parseText(configFileContent)
-
-    // Отладочный вывод, чтобы убедиться, что файл конфигурации успешно загружен
-    echo "Configuration file loaded: ${configFileName}"
-    echo "Contents of configuration file:"
-    echo "PROJECT_NAME: ${config.PROJECT_NAME}"
-    echo "AGENT: ${config.AGENT}"
-}
-
 pipeline {
     agent any
 
     stages {
+        stage('Read Config') {
+            steps {
+                script {
+                    // Читаем содержимое JSON файла и сохраняем его в переменной
+                    def configFile = readJSON file: configFileName
+
+                    // Теперь вы можете использовать переменные из JSON файла в pipeline
+                    config = configFile
+
+                    // Отладочный вывод, чтобы убедиться, что файл конфигурации успешно загружен
+                    echo "Configuration file loaded: ${configFileName}"
+                    echo "Contents of configuration file:"
+                    echo "PROJECT_NAME: ${config.PROJECT_NAME}"
+                    echo "AGENT: ${config.AGENT}"
+                }
+            }
+        }
+
         stage('Example') {
             steps {
                 script {
