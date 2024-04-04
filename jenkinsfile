@@ -16,7 +16,7 @@ node {
     
     // Загружаем и парсим файл конфигурации JSON
     def configFileContent = readFile(configFileName)
-    config = readJSON text: configFileContent
+    config = readJSON file: configFileContent
 
     // Отладочный вывод, чтобы убедиться, что файл конфигурации успешно загружен
     echo "Configuration file loaded: ${configFileName}"
