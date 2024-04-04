@@ -12,7 +12,7 @@ def config
 
 node {
     // Загрузка файла конфигурации
-    config = load load "${workspace}/${configFileName}"
+    config = load "${workspace}/${configFileName}"
 }
 
 pipeline {
