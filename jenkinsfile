@@ -10,16 +10,17 @@ switch (params.BUILD) {
         break
 }
 
+def config // Определение переменной config глобально
+
 pipeline {
     agent any
-        // options {
-        //     ansiColor('xterm')
-        // }
-    parameters{
+
+    parameters {
         booleanParam(name: 'app', defaultValue: true, description: 'Стенд на котором запускаем')
         booleanParam(name: 'istio', defaultValue: false, description: 'Установка новой конфигурации istio')
         string(name: 'DISTRIB', defaultValue: 'D-01.012.00-85', description: 'дистрибутив')
     }
+
     stages {
         stage('Read Config') {
             steps {
@@ -28,8 +29,7 @@ pipeline {
                     // Читаем JSON файл
                     def configFileContent = readFile(configFileName)
                     def jsonSlurper = new groovy.json.JsonSlurper()
-                    def config = jsonSlurper.parseText(configFileContent)
-
+                    config = jsonSlurper.parseText(configFileContent) // Присваиваем значение глобальной переменной config
                     // Указываем спарсиный файл как переменную
                     env.CONFIG = configFileContent
                 }
@@ -40,8 +40,8 @@ pipeline {
             steps {
                 script {
                     echo '\n\033[42m======================================\033[0m\033[41m\033[97m Example \033[0m\033[42m======================================\033[0m\n'
-                    // Получаем конфигурацию из переменной env.CONFIG
-                    //def config = new groovy.json.JsonSlurper().parseText(env.CONFIG)
+                    // Получаем конфигурацию из глобальной переменной config
+                    //def config = new groovy.json.JsonSlurper().parseText(env.CONFIG) // Убираем это из этапа
                     // Отладка для проверки переменных в JSON 
                     echo "PROJECT_NAME: ${config.PROJECT_NAME}"
                     echo "AGENT: ${config.AGENT}"
@@ -49,13 +49,5 @@ pipeline {
                 }
             }
         }
-        // post {
-        //     always {
-        //         cleanWs notFailBuild: true, disableDeferredWipeout: true, deleteDirs: true
-        //     }
-        // }
-
-
-
     }
 }
