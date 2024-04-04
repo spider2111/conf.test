@@ -10,17 +10,18 @@ switch (params.BUILD) {
         break
 }
 
-def config // Определение переменной config глобально
-
 pipeline {
-    agent any
-
-    parameters {
+    agent {
+        label params.BUILD == 'test1' ? 'any' : 'agent2' // Условное использование меток агента
+    }
+        // options {
+        //     ansiColor('xterm')
+        // }
+    parameters{
         booleanParam(name: 'app', defaultValue: true, description: 'Стенд на котором запускаем')
         booleanParam(name: 'istio', defaultValue: false, description: 'Установка новой конфигурации istio')
         string(name: 'DISTRIB', defaultValue: 'D-01.012.00-85', description: 'дистрибутив')
     }
-
     stages {
         stage('Read Config') {
             steps {
@@ -29,7 +30,8 @@ pipeline {
                     // Читаем JSON файл
                     def configFileContent = readFile(configFileName)
                     def jsonSlurper = new groovy.json.JsonSlurper()
-                    config = jsonSlurper.parseText(configFileContent) // Присваиваем значение глобальной переменной config
+                    def config = jsonSlurper.parseText(configFileContent)
+
                     // Указываем спарсиный файл как переменную
                     env.CONFIG = configFileContent
                 }
@@ -40,8 +42,8 @@ pipeline {
             steps {
                 script {
                     echo '\n\033[42m======================================\033[0m\033[41m\033[97m Example \033[0m\033[42m======================================\033[0m\n'
-                    // Получаем конфигурацию из глобальной переменной config
-                    //def config = new groovy.json.JsonSlurper().parseText(env.CONFIG) // Убираем это из этапа
+                    // Получаем конфигурацию из переменной env.CONFIG
+                    def config = new groovy.json.JsonSlurper().parseText(env.CONFIG)
                     // Отладка для проверки переменных в JSON 
                     echo "PROJECT_NAME: ${config.PROJECT_NAME}"
                     echo "AGENT: ${config.AGENT}"
@@ -49,5 +51,13 @@ pipeline {
                 }
             }
         }
+        // post {
+        //     always {
+        //         cleanWs notFailBuild: true, disableDeferredWipeout: true, deleteDirs: true
+        //     }
+        // }
+
+
+
     }
 }
