@@ -1,10 +1,10 @@
 def configFileName
 switch (params.BUILD) {
     case 'test1':
-        configFileName = 'config_test1.groovy'
+        configFileName = 'config_test1.json'
         break
     case 'test2':
-        configFileName = 'config_test2.groovy'
+        configFileName = 'config_test2.json'
         break
 }
 
@@ -14,9 +14,9 @@ node {
     // Клонируем репозиторий Git
     git branch: 'main', url: 'https://github.com/spider2111/conf.test.git'
     
-    // Загружаем и выполнить файл конфигурации
+    // Загружаем и парсим файл конфигурации JSON
     def configFileContent = readFile(configFileName)
-    config = evaluate(configFileContent)
+    config = readJSON text: configFileContent
 
     // Отладочный вывод, чтобы убедиться, что файл конфигурации успешно загружен
     echo "Configuration file loaded: ${configFileName}"
