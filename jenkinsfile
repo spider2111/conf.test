@@ -8,7 +8,12 @@ switch (params.BUILD) {
         break
 }
 
-def config = load configFileName
+def config
+
+node {
+    // Загрузка файла конфигурации
+    config = load configFileName
+}
 
 pipeline {
     agent any
