@@ -1,3 +1,5 @@
+import groovy.json.JsonSlurper
+
 def configFileName
 
 switch (params.BUILD) {
