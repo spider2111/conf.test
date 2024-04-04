@@ -18,9 +18,10 @@ pipeline {
         stage('Read Config') {
             steps {
                 script {
-                    // Читаем содержимое JSON файла и сохраняем его в переменной
+                    // Читаем содержимое JSON файла и парсим его с помощью JsonSlurper
                     def configFileContent = readFile(configFileName)
-                    config = readJSON text: configFileContent
+                    def jsonSlurper = new JsonSlurper()
+                    config = jsonSlurper.parseText(configFileContent)
 
                     // Отладочный вывод, чтобы убедиться, что файл конфигурации успешно загружен
                     echo "Configuration file loaded: ${configFileName}"
@@ -42,4 +43,3 @@ pipeline {
         }
     }
 }
-
