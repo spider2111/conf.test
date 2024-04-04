@@ -1,6 +1,3 @@
-@Grab('com.googlecode.json-simple:json-simple:1.1.1')
-import groovy.json.JsonSlurper
-
 def configFileName
 
 switch (params.BUILD) {
@@ -12,8 +9,6 @@ switch (params.BUILD) {
         break
 }
 
-def config
-
 pipeline {
     agent any
 
@@ -21,10 +16,8 @@ pipeline {
         stage('Read Config') {
             steps {
                 script {
-                    // Читаем содержимое JSON файла и парсим его с помощью JsonSlurper
-                    def configFileContent = readFile(configFileName)
-                    def jsonSlurper = new JsonSlurper()
-                    config = jsonSlurper.parseText(configFileContent)
+                    // Читаем содержимое JSON файла с помощью readJSON
+                    def config = readJSON file: configFileName
 
                     // Отладочный вывод, чтобы убедиться, что файл конфигурации успешно загружен
                     echo "Configuration file loaded: ${configFileName}"
@@ -39,6 +32,7 @@ pipeline {
             steps {
                 script {
                     // Берем переменные из config файлов
+                    def config = readJSON file: configFileName
                     echo "PROJECT_NAME: ${config.PROJECT_NAME}"
                     echo "AGENT: ${config.AGENT}"
                 }
