@@ -1,3 +1,4 @@
+import groovy.json.JsonSlurper
 def configFileName
 
 switch (params.BUILD) {
@@ -16,14 +17,19 @@ pipeline {
         stage('Read Config') {
             steps {
                 script {
-                    // Читаем содержимое JSON файла с помощью readJSON
-                    def config = readJSON file: configFileName
+                    // Read the content of the JSON file
+                    def configFileContent = readFile(configFileName)
+                    // Parse the JSON content using JsonSlurper
+                    def jsonSlurper = new groovy.json.JsonSlurper()
+                    def config = jsonSlurper.parseText(configFileContent)
 
-                    // Отладочный вывод, чтобы убедиться, что файл конфигурации успешно загружен
+                    // Debug output to ensure that the configuration file is loaded successfully
                     echo "Configuration file loaded: ${configFileName}"
                     echo "Contents of configuration file:"
                     echo "PROJECT_NAME: ${config.PROJECT_NAME}"
                     echo "AGENT: ${config.AGENT}"
+                    // Store the parsed configuration in an environment variable
+                    env.CONFIG = configFileContent
                 }
             }
         }
@@ -31,8 +37,9 @@ pipeline {
         stage('Example') {
             steps {
                 script {
-                    // Берем переменные из config файлов
-                    def config = readJSON file: configFileName
+                    // Retrieve the parsed configuration from the environment variable
+                    def config = new groovy.json.JsonSlurper().parseText(env.CONFIG)
+                    // Print the variables from the config file
                     echo "PROJECT_NAME: ${config.PROJECT_NAME}"
                     echo "AGENT: ${config.AGENT}"
                 }
