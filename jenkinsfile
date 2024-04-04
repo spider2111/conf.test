@@ -12,9 +12,9 @@ switch (params.BUILD) {
 
 pipeline {
     agent any
-        options {
-            ansiColor('xterm')
-        }
+        // options {
+        //     ansiColor('xterm')
+        // }
     parameters{
         booleanParam(name: 'app', defaultValue: true, description: 'Стенд на котором запускаем')
         booleanParam(name: 'istio', defaultValue: false, description: 'Установка новой конфигурации istio')
@@ -49,11 +49,11 @@ pipeline {
                 }
             }
         }
-        post {
-            always {
-                cleanWs notFailBuild: true, disableDeferredWipeout: true, deleteDirs: true
-            }
-        }
+        // post {
+        //     always {
+        //         cleanWs notFailBuild: true, disableDeferredWipeout: true, deleteDirs: true
+        //     }
+        // }
 
 
 
